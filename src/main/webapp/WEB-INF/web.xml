@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0" metadata-complete="true">
+    <!-- 이것은 IntelliJ IDEA용으로 웹 프로젝트임을 표시하는 마커 파일입니다. -->
+    <!-- 이 안에는 아무 설정도 넣지 말고 [ProjectName]WebApplicationInitializer 설정 파일을 사용하십시오. -->
+    <!-- 참조 : http://wiki.coupang.net:8090/pages/viewpage.action?pageId=14797518 -->
+    <welcome-file-list>
+        <welcome-file>main</welcome-file>
+    </welcome-file-list>
+</web-app>
