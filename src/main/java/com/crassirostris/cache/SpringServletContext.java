@@ -1,62 +1,62 @@
 package com.crassirostris.cache;
 
-import com.github.jknack.handlebars.*;
-import com.github.jknack.handlebars.springmvc.*;
-import com.google.common.collect.*;
-import lombok.extern.slf4j.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.boot.*;
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.cache.*;
-import org.springframework.cache.annotation.*;
-import org.springframework.cache.concurrent.*;
-import org.springframework.cache.support.*;
-import org.springframework.context.annotation.*;
-import org.springframework.core.env.*;
-import org.springframework.scheduling.annotation.*;
-
-import static org.springframework.util.Assert.notNull;
+import com.coupang.configuration.schedule.SpringScheduling;
+import com.github.jknack.handlebars.springmvc.HandlebarsViewResolver;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.servlet.view.BeanNameViewResolver;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 /**
  * Created by crassirostris on 15. 9. 8..
  */
 @Slf4j
 @EnableAutoConfiguration
+@EnableAspectJAutoProxy
 @Configuration
-@ComponentScan("com.crassirostris.cache")
-@EnableCaching
-@EnableScheduling
+@ComponentScan({"com.crassirostris.cache", "com.coupang.configuration"})
+@Import(SpringScheduling.class)
 public class SpringServletContext {
+	public static final String HANDLEBARS_VIEW_BASE_PATH = "/WEB-INF/views/";
+	public static final String HANDLEBARS_VIEW_SUFFIX = ".hbs";
+	public static final boolean FAIL_ON_MISSING_FILE = false;
+	public static final int ORDER = 1;
 	private String simpleCache = "simpleCache";
-	private CacheManager cacheManager;
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(SpringServletContext.class, args);
 	}
 
 	@Bean
-	public HandlebarsViewResolver viewResolver() {
-		final HandlebarsViewResolver viewResolver = new HandlebarsViewResolver();
-		viewResolver.registerHelper("@json", Jackson2Helper.INSTANCE);
+	public HandlebarsViewResolver handlebarsViewResolver() {
+		HandlebarsViewResolver viewResolver = new HandlebarsViewResolver();
+		viewResolver.setOrder(ORDER);
+		viewResolver.setFailOnMissingFile(FAIL_ON_MISSING_FILE);
 		viewResolver.setCache(false);
-		viewResolver.setSuffix(".hbs");
+
+		viewResolver.setPrefix(HANDLEBARS_VIEW_BASE_PATH);
+		viewResolver.setSuffix(HANDLEBARS_VIEW_SUFFIX);
 
 		return viewResolver;
 	}
-
 	@Bean
-	public CacheManager getSimpleCacheManager() {
-
-		SimpleCacheManager cacheManager = new SimpleCacheManager();
-		Cache cache = new ConcurrentMapCache("simpleCache");
-		cacheManager.setCaches(Lists.newArrayList(cache));
-		this.cacheManager = cacheManager;
-		return cacheManager;
+	public MappingJackson2JsonView jsonView() {
+		MappingJackson2JsonView mappingJacksonJsonView = new MappingJackson2JsonView();
+		return mappingJacksonJsonView;
 	}
 
-	@Scheduled(fixedRate = 60*1000)
-	public void expireSimpleCache() {
-		Cache simpleCache = cacheManager.getCache(this.simpleCache);
-		log.info("simple Cache clear");
-		simpleCache.clear();
+	@Bean
+	public BeanNameViewResolver beanNameViewResolver() {
+		BeanNameViewResolver beanNameViewResolver = new BeanNameViewResolver();
+		beanNameViewResolver.setOrder(0);
+		return beanNameViewResolver;
 	}
 }

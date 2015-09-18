@@ -11,12 +11,12 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'spring-boot'
-
+sourceCompatibility = 1.8
+version = '1.8'
 jar {
     baseName = 'myproject'
     version =  '0.0.1-SNAPSHOT'
 }
-
 repositories {
     jcenter()
     maven { url "http://repo.spring.io/snapshot" }
@@ -24,11 +24,15 @@ repositories {
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    compile 'org.springframework.boot:spring-boot-starter-aop'
+    compile 'org.springframework:spring-context-support'
+    compile 'net.sf.ehcache:ehcache:2.9.0'
     compile 'com.google.guava:guava:18.0'
     compile "org.projectlombok:lombok:1.16.6"
     compile 'com.github.jknack:handlebars:2.2.3'
     compile 'com.github.jknack:handlebars-jackson2:2.2.3'
     compile 'com.github.jknack:handlebars-springmvc:2.2.3'
+    compile fileTree(dir:'libs', include:['*.jar'])
     testCompile("org.springframework.boot:spring-boot-starter-test")
 }

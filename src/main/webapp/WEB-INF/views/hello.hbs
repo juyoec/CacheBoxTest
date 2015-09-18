@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>Dashboard - Cache Test</title>
+
+    <meta name="description" content="overview &amp; stats" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/resource/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/resource/assets/css/font-awesome.min.css" />
+
+    <!-- page specific plugin styles -->
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/resource/assets/css/ace-fonts.css" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/resource/assets/css/ace.min.css" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+	<link rel="stylesheet" href="/resource/assets/css/ace-part2.min.css" />
+    <![endif]-->
+    <link rel="stylesheet" href="/resource/assets/css/ace-skins.min.css" />
+    <link rel="stylesheet" href="/resource/assets/css/ace-rtl.min.css" />
+
+    <!--[if lte IE 9]>
+	<link rel="stylesheet" href="/resource/assets/css/ace-ie.min.css" />
+    <![endif]-->
+
+    <!-- inline styles related to this page -->
+
+    <!-- ace settings handler -->
+    <script src="/resource/assets/js/ace-extra.min.js"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+    <!--[if lte IE 8]>
+	<script src="/resource/assets/js/html5shiv.min.js"></script>
+	<script src="/resource/assets/js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="no-skin">
+<!-- #section:basics/navbar.layout -->
+<div id="navbar" class="navbar navbar-default">
+    <script type="text/javascript">
+        try{ace.settings.check('navbar' , 'fixed')}catch(e){}
+    </script>
+
+    <div class="navbar-container" id="navbar-container">
+        <!-- #section:basics/sidebar.mobile.toggle -->
+        <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler">
+            <span class="sr-only">Toggle sidebar</span>
+
+            <span class="icon-bar"></span>
+
+            <span class="icon-bar"></span>
+
+            <span class="icon-bar"></span>
+        </button>
+
+        <!-- /section:basics/sidebar.mobile.toggle -->
+        <div class="navbar-header pull-left">
+            <!-- #section:basics/navbar.layout.brand -->
+            <a href="#" class="navbar-brand">
+                <small>
+                    <i class="fa fa-leaf"></i>
+                    Ace Admin
+                </small>
+            </a>
+
+            <!-- /section:basics/navbar.layout.brand -->
+
+            <!-- #section:basics/navbar.toggle -->
+
+            <!-- /section:basics/navbar.toggle -->
+        </div>
+
+        <!-- #section:basics/navbar.dropdown -->
+        <div class="navbar-buttons navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+                <li class="green">
+                    <a id="goandstop">
+                        <i class="ace-icon fa fa-bell icon-animated-bell"></i>
+                        <span id="times" class="badge badge-important">0</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- /section:basics/navbar.dropdown -->
+    </div><!-- /.navbar-container -->
+</div>
+
+<!-- /section:basics/navbar.layout -->
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+    <!-- /section:basics/sidebar -->
+    <div class="main-content">
+        <!-- #section:basics/content.breadcrumbs -->
+        <div class="breadcrumbs" id="breadcrumbs">
+            <script type="text/javascript">
+                try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+            </script>
+
+            <ul class="breadcrumb">
+                <li>
+                    <i class="ace-icon fa fa-home home-icon"></i>
+                    <a href="#">Home</a>
+                </li>
+                <li class="active">Dashboard</li>
+            </ul><!-- /.breadcrumb -->
+
+            <!-- #section:basics/content.searchbox -->
+            <div class="nav-search" id="nav-search">
+                <form class="form-search">
+							<span class="input-icon">
+								<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
+								<i class="ace-icon fa fa-search nav-search-icon"></i>
+							</span>
+                </form>
+            </div><!-- /.nav-search -->
+
+            <!-- /section:basics/content.searchbox -->
+        </div>
+
+        <!-- /section:basics/content.breadcrumbs -->
+        <div class="page-content">
+            <!-- #section:settings.box -->
+            <div class="ace-settings-container" id="ace-settings-container" style="display:none;">
+                <div class="btn btn-app btn-xs btn-warning ace-settings-btn" id="ace-settings-btn">
+                    <i class="ace-icon fa fa-cog bigger-150"></i>
+                </div>
+
+                <div class="ace-settings-box clearfix" id="ace-settings-box">
+                    <div class="pull-left width-50">
+                        <!-- #section:settings.skins -->
+                        <div class="ace-settings-item">
+                            <div class="pull-left">
+                                <select id="skin-colorpicker" class="hide">
+                                    <option data-skin="no-skin" value="#438EB9">#438EB9</option>
+                                    <option data-skin="skin-1" value="#222A2D">#222A2D</option>
+                                    <option data-skin="skin-2" value="#C6487E">#C6487E</option>
+                                    <option data-skin="skin-3" value="#D0D0D0">#D0D0D0</option>
+                                </select>
+                            </div>
+                            <span>&nbsp; Choose Skin</span>
+                        </div>
+
+                        <!-- /section:settings.skins -->
+
+                        <!-- #section:settings.navbar -->
+                        <div class="ace-settings-item">
+                            <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-navbar" />
+                            <label class="lbl" for="ace-settings-navbar"> Fixed Navbar</label>
+                        </div>
+
+                        <!-- /section:settings.navbar -->
+
+                        <!-- #section:settings.sidebar -->
+                        <div class="ace-settings-item">
+                            <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-sidebar" />
+                            <label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
+                        </div>
+
+                        <!-- /section:settings.sidebar -->
+
+                        <!-- #section:settings.breadcrumbs -->
+                        <div class="ace-settings-item">
+                            <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-breadcrumbs" />
+                            <label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
+                        </div>
+
+                        <!-- /section:settings.breadcrumbs -->
+
+                        <!-- #section:settings.rtl -->
+                        <div class="ace-settings-item">
+                            <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-rtl" />
+                            <label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
+                        </div>
+
+                        <!-- /section:settings.rtl -->
+
+                        <!-- #section:settings.container -->
+                        <div class="ace-settings-item">
+                            <input type="checkbox" checked="checkeds" class="ace ace-checkbox-2" id="ace-settings-add-container" />
+                            <label class="lbl" for="ace-settings-add-container">
+                                Inside
+                                <b>.container</b>
+                            </label>
+                        </div>
+
+                        <!-- /section:settings.container -->
+                    </div><!-- /.pull-left -->
+
+                    <div class="pull-left width-50">
+                        <!-- #section:basics/sidebar.options -->
+                        <div class="ace-settings-item">
+                            <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-hover" />
+                            <label class="lbl" for="ace-settings-hover"> Submenu on Hover</label>
+                        </div>
+
+                        <div class="ace-settings-item">
+                            <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-compact" />
+                            <label class="lbl" for="ace-settings-compact"> Compact Sidebar</label>
+                        </div>
+
+                        <div class="ace-settings-item">
+                            <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-highlight" />
+                            <label class="lbl" for="ace-settings-highlight"> Alt. Active Item</label>
+                        </div>
+
+                        <!-- /section:basics/sidebar.options -->
+                    </div><!-- /.pull-left -->
+                </div><!-- /.ace-settings-box -->
+            </div><!-- /.ace-settings-container -->
+
+            <!-- /section:settings.box -->
+			<div class="page-content-area">
+
+			</div>
+        </div><!-- /.page-content -->
+    </div><!-- /.main-content -->
+
+    <div class="footer">
+        <div class="footer-inner">
+            <!-- #section:basics/footer -->
+            <div class="footer-content">
+						<span class="bigger-120">
+							<span class="blue bolder">Ace</span>
+							Application &copy; 2013-2014
+						</span>
+
+                &nbsp; &nbsp;
+						<span class="action-buttons">
+							<a href="#">
+                                <i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
+                            </a>
+
+							<a href="#">
+                                <i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
+                            </a>
+
+							<a href="#">
+                                <i class="ace-icon fa fa-rss-square orange bigger-150"></i>
+                            </a>
+						</span>
+            </div>
+
+            <!-- /section:basics/footer -->
+        </div>
+    </div>
+
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+    </a>
+</div><!-- /.main-container -->
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='/resource/assets/js/jquery.min.js'>"+"<"+"/script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+	window.jQuery || document.write("<script src='/resource/assets/js/jquery1x.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+<script type="text/javascript">
+    if('ontouchstart' in document.documentElement) document.write("<script src='/resource/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+</script>
+<script src="/resource/assets/js/bootstrap.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!--[if lte IE 8]>
+<script src="/resource/assets/js/excanvas.min.js"></script>
+<![endif]-->
+<script src="/resource/assets/js/jquery-ui.custom.min.js"></script>
+<script src="/resource/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/resource/assets/js/jquery.easypiechart.min.js"></script>
+<script src="/resource/assets/js/jquery.sparkline.min.js"></script>
+<script src="/resource/assets/js/flot/jquery.flot.min.js"></script>
+<script src="/resource/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="/resource/assets/js/flot/jquery.flot.resize.min.js"></script>
+
+<!-- ace scripts -->
+<script src="/resource/assets/js/ace-elements.min.js"></script>
+<script src="/resource/assets/js/ace.min.js"></script>
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    jQuery(function($) {
+		var testList = [
+			{name: 'simplaCache', url:'/getcache/simple', data:[]},
+			{name: 'ehcacheCache', url:'/getcache/ehcache', data:[]},
+			{name: 'guavaCache', url:'/getcache/guava', data:[]},
+			{name: 'refreshCache', url:'/getcache/refresh', data:[]}
+		]
+		var container ='<div class="row">'+
+        '<div class="col-sm-12">'+
+        '<div class="widget-box transparent">'+
+        '<div class="widget-header widget-header-flat">'+
+        '<h4 class="widget-title lighter">'+
+        '<i class="ace-icon fa fa-signal"></i>'+
+        'name'+
+        '</h4>'+
+
+        '<div class="widget-toolbar">'+
+        '<a href="#" data-action="collapse">'+
+        '<i class="ace-icon fa fa-chevron-up"></i>'+
+        '</a>'+
+        '</div>'+
+        '</div>'+
+
+        '<div class="widget-body">'+
+        '<div class="widget-main padding-4">'+
+        '<div id="name-charts"></div>'+
+        '</div><!-- /.widget-main -->'+
+        '</div><!-- /.widget-body -->'+
+        '</div><!-- /.widget-box -->'+
+        '</div>'+
+        '</div>';
+		var dashchartString = '-charts';
+		var $pageContentArea = $('.page-content-area')
+		var flotOptions = {
+            hoverable: true,
+            shadowSize: 0,
+            series: {
+                lines: {show: true},
+                points: {show: true}
+            },
+            xaxis: {
+                show: false
+            },
+            yaxis: {
+                min: 0,
+                max: 400
+            },
+            grid: {
+                backgroundColor: {colors: ["#fff", "#fff"]},
+                borderWidth: 1,
+                borderColor: '#555',
+                hoverable: true
+            }
+        };
+        $("<div id='tooltip'></div>").css({
+            position: "absolute",
+            display: "none",
+            border: "1px solid #fdd",
+            padding: "2px",
+            "background-color": "#fee",
+            opacity: 0.80
+        }).appendTo("body");
+		$.each(testList, function(i,e) {
+			var tmpc = container.replace(/name/gi, e.name) ;
+            $pageContentArea.append(tmpc);
+            var targetID = '#' + e.name + dashchartString;
+            $(targetID).css({'width': '100%', 'height': '160px'});
+            var $plot = $.plot(targetID, [{label: "ms", data: e.data}], flotOptions);
+            $(targetID).bind("plothover", function (event, pos, item) {
+                if (item) {
+                    var x = item.datapoint[0],y = item.datapoint[1];
+                    $("#tooltip").html("times : " + x + " , response : " + y + 'ms')
+                            .css({top: item.pageY+5, left: item.pageX+5})
+                            .fadeIn(200);
+                } else {
+                    $("#tooltip").hide();
+                }
+			});
+            e['plot'] = $plot;
+		});
+		var duration=50;
+		var isgo = false;
+		var update = function() {
+            $.each(testList, function(i,e){
+                var ajaxTime= new Date().getTime();
+                $.ajax({
+                    type: 'GET',
+                    url: e.url,
+                    success: function (data, textStatus, request) {
+                        var totalTime = new Date().getTime()-ajaxTime;
+                        var data2 = e.data;
+                        data2.push([data2.length + 1, totalTime]);
+                        var targetID = '#' + e.name + dashchartString;
+                        $.plot(targetID, [{label: "ms", data: data2}], flotOptions);
+                    }
+                });
+            });
+			if (isgo) {
+                setTimeout(update, duration);
+            }
+		}
+		$('#goandstop').click(function() {
+            if (isgo) {
+				isgo = false;
+			} else {
+				isgo = true;
+			}
+            update();
+		});
+/*
+        var sales_charts = $('#sales-charts').css({'width': '100%', 'height': '220px'});
+        $.plot("#sales-charts", [
+            {label: "Domains", data: d1},
+            {label: "Hosting", data: d2},
+            {label: "Services", data: d3}
+        ], {
+            hoverable: true,
+            shadowSize: 0,
+            series: {
+                lines: {show: true},
+                points: {show: true}
+            },
+            xaxis: {
+                tickLength: 0
+            },
+            yaxis: {
+                ticks: 10,
+                min: -2,
+                max: 2,
+                tickDecimals: 3
+            },
+            grid: {
+                backgroundColor: {colors: ["#fff", "#fff"]},
+                borderWidth: 1,
+                borderColor: '#555'
+            }
+        });*/
+    });
+</script>
+
+<!-- the following scripts are used in demo only for onpage help and you don't need them -->
+<link rel="stylesheet" href="/resource/assets/css/ace.onpage-help.css" />
+
+<script type="text/javascript"> ace.vars['base'] = '..'; </script>
+<script src="/resource/assets/js/ace/elements.onpage-help.js"></script>
+<script src="/resource/assets/js/ace/ace.onpage-help.js"></script>
+</body>
+</html>

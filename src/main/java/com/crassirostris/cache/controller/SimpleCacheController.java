@@ -12,22 +12,15 @@ import java.util.*;
  */
 @Slf4j
 @RestController
-@RequestMapping("/simple")
-public class SimpleCacheController {
+public class SimpleCacheController extends AbstractCacheController {
 	@RequestMapping("/get")
 	public String get() {
-		DateFormat format1 = DateFormat.getDateInstance(DateFormat.FULL);
-		Date time = Calendar.getInstance().getTime();
-		log.info("call simple get ");
-		return format1.format(time);
+		return getData(this.getClass().getCanonicalName() + " get");
 	}
 	@Cacheable("simpleCache")
-	@RequestMapping("/getcache")
+	@RequestMapping("/simple")
 	public String getcache() throws InterruptedException {
-		DateFormat format1 = DateFormat.getDateInstance(DateFormat.FULL);
-		Date time = Calendar.getInstance().getTime();
-		log.info("call simple cache get thread sleep 300ms");
 		Thread.sleep(300L);
-		return format1.format(time);
+		return getData(this.getClass().getCanonicalName() + " getcache sleep 300ms");
 	}
 }
