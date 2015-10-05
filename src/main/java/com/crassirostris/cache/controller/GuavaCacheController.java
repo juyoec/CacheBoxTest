@@ -27,6 +27,7 @@ public class GuavaCacheController extends AbstractCacheController {
 	LoadingCache<Long, String> cache = CacheBuilder.newBuilder().maximumSize(5).refreshAfterWrite(CACHE_REFRESH_DURATION, TimeUnit.MILLISECONDS).build(
 			new CacheLoader<Long, String>() {
 				public String load(Long key) throws InterruptedException { // no checked exception
+					refreshLog();
 					return getString();
 				}
 

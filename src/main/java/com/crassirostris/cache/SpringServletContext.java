@@ -1,18 +1,13 @@
 package com.crassirostris.cache;
 
-import com.coupang.configuration.schedule.SpringScheduling;
 import com.github.jknack.handlebars.springmvc.HandlebarsViewResolver;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.Import;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -24,7 +19,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 @EnableAspectJAutoProxy
 @Configuration
 @ComponentScan({"com.crassirostris.cache", "com.coupang.configuration"})
-@Import(SpringScheduling.class)
 public class SpringServletContext {
 	public static final String HANDLEBARS_VIEW_BASE_PATH = "/WEB-INF/views/";
 	public static final String HANDLEBARS_VIEW_SUFFIX = ".hbs";

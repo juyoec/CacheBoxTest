@@ -1,10 +1,10 @@
 package com.crassirostris.cache;
 
-import com.coupang.configuration.cache.GuavaCacheManager;
-import com.coupang.configuration.cache.RefreshableCache;
-import com.coupang.configuration.schedule.DelayType;
-import com.coupang.configuration.schedule.SpringScheduling;
 import com.crassirostris.cache.controller.AbstractCacheController;
+import com.crassirostris.cache.controller.GuavaCacheManagerController;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import net.sf.ehcache.config.CacheConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.cache.interceptor.KeyGenerator;
@@ -29,8 +30,11 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.crassirostris.cache.controller.GuavaCacheManagerController.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -76,9 +80,9 @@ public class CacheConfig implements CachingConfigurer{
 	@Bean
 	public GuavaCacheManager guavaCacheManager() {
 		GuavaCacheManager cacheManager = new GuavaCacheManager();
-		RefreshableCache cache = new RefreshableCache("refreshableCache", DelayType.FIXED_RATE);
-		cache.setFixedInterval(AbstractCacheController.CACHE_REFRESH_DURATION);
-		cacheManager.setCaches(Lists.newArrayList(cache));
+		CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder().expireAfterWrite(AbstractCacheController.CACHE_REFRESH_DURATION, TimeUnit.MILLISECONDS).maximumSize(100);
+		cacheManager.setCacheBuilder(builder);
+
 		return cacheManager;
 	}
 

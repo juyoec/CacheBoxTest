@@ -16,7 +16,7 @@ import java.util.Date;
 @Slf4j
 @RequestMapping("/getcache")
 public abstract class AbstractCacheController {
-	public static final int CACHE_REFRESH_DURATION = 60*1000;
+	public static final int CACHE_REFRESH_DURATION = 30*1000;
 	protected String getData(String cacheName) {
 		DateFormat format1 = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG);
 		Date time = Calendar.getInstance().getTime();
