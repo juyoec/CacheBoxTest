@@ -2,6 +2,9 @@ package com.crassirostris.cache;
 
 import com.crassirostris.cache.controller.AbstractCacheController;
 import com.crassirostris.cache.controller.GuavaCacheManagerController;
+import com.crassirostris.cache.refresh.RefreshableCache;
+import com.crassirostris.cache.refresh.RefreshableCacheManager;
+import com.crassirostris.cache.refresh.RefreshableCacheScheduleResistrar;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -15,6 +18,7 @@ import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.cache.guava.GuavaCache;
 import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.cache.interceptor.CacheResolver;
@@ -26,6 +30,7 @@ import org.springframework.cache.support.CompositeCacheManager;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.List;
@@ -43,10 +48,9 @@ import static com.crassirostris.cache.controller.GuavaCacheManagerController.*;
  * Time: 오전 11:35
  */
 @Configuration
-@EnableCaching
-@EnableAsync
+@Import(RefreshableCacheScheduleResistrar.class)
 public class CacheConfig implements CachingConfigurer{
-	@Autowired
+	/*@Autowired
 	@Qualifier("simpleCacheManager")
 	private SimpleCacheManager simpleCacheManager;
 	@Autowired
@@ -54,7 +58,7 @@ public class CacheConfig implements CachingConfigurer{
 	private GuavaCacheManager guavaCacheManager;
 	@Autowired
 	@Qualifier("ehcacheCacheManager")
-	private EhCacheCacheManager ehcacheManager;
+	private EhCacheCacheManager ehcacheManager;*/
 
 	@Bean
 	public EhCacheCacheManager ehcacheCacheManager() {
@@ -78,10 +82,18 @@ public class CacheConfig implements CachingConfigurer{
 	}
 
 	@Bean
+	public GuavaCache refreshableCache() {
+		return new RefreshableCache("refreshableCache").setFixedInterval(AbstractCacheController.CACHE_REFRESH_DURATION);
+	}
+
+	@Bean
 	public GuavaCacheManager guavaCacheManager() {
-		GuavaCacheManager cacheManager = new GuavaCacheManager();
+		//GuavaCacheManager cacheManager = new GuavaCacheManager();
+		RefreshableCacheManager cacheManager = new RefreshableCacheManager();
 		CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder().expireAfterWrite(AbstractCacheController.CACHE_REFRESH_DURATION, TimeUnit.MILLISECONDS).maximumSize(100);
-		cacheManager.setCacheBuilder(builder);
+		cacheManager.setCacheBuilder(builder);// 기본적인 GuavaCache 사용할때
+
+		cacheManager.setCaches(refreshableCache());
 
 		return cacheManager;
 	}
@@ -89,7 +101,7 @@ public class CacheConfig implements CachingConfigurer{
 	@Bean
 	@Override
 	public CacheManager cacheManager() {
-		List<CacheManager> cacheManagers = Stream.of(simpleCacheManager, guavaCacheManager, ehcacheManager).filter(Objects::nonNull).collect(Collectors.toList());
+		List<CacheManager> cacheManagers = Stream.of(simpleCacheManager(), guavaCacheManager(), ehcacheCacheManager()).filter(Objects::nonNull).collect(Collectors.toList());
 
 		CompositeCacheManager cacheManager = new CompositeCacheManager();
 
