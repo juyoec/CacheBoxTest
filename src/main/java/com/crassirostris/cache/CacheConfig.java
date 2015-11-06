@@ -1,21 +1,16 @@
 package com.crassirostris.cache;
 
 import com.crassirostris.cache.controller.AbstractCacheController;
-import com.crassirostris.cache.controller.GuavaCacheManagerController;
+import com.crassirostris.cache.refresh.ClusterCache;
 import com.crassirostris.cache.refresh.RefreshableCache;
 import com.crassirostris.cache.refresh.RefreshableCacheManager;
 import com.crassirostris.cache.refresh.RefreshableCacheScheduleResistrar;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import com.google.common.collect.Lists;
 import net.sf.ehcache.config.CacheConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.guava.GuavaCache;
@@ -31,15 +26,13 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.scheduling.annotation.EnableAsync;
 
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.crassirostris.cache.controller.GuavaCacheManagerController.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,6 +59,7 @@ public class CacheConfig implements CachingConfigurer{
 		cacheConfiguration.setName("ehcache");
 		cacheConfiguration.setMemoryStoreEvictionPolicy("LRU");
 		cacheConfiguration.setMaxEntriesLocalHeap(100L);
+		cacheConfiguration.setTimeToLiveSeconds(5*60*1000);
 
 		net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
 		config.addCache(cacheConfiguration);
@@ -85,6 +79,13 @@ public class CacheConfig implements CachingConfigurer{
 	public GuavaCache refreshableCache() {
 		return new RefreshableCache("refreshableCache").setFixedInterval(AbstractCacheController.CACHE_REFRESH_DURATION);
 	}
+/*
+	@Bean
+	public GuavaCache clusterCache() throws UnknownHostException {
+		RefreshableCache clusterCache = new ClusterCache("clusterCache", "192.168.181.41:8080","192.168.181.41:8081").setFixedInterval(AbstractCacheController.CACHE_REFRESH_DURATION);
+
+		return clusterCache;
+	}*/
 
 	@Bean
 	public GuavaCacheManager guavaCacheManager() {
@@ -93,7 +94,7 @@ public class CacheConfig implements CachingConfigurer{
 		CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder().expireAfterWrite(AbstractCacheController.CACHE_REFRESH_DURATION, TimeUnit.MILLISECONDS).maximumSize(100);
 		cacheManager.setCacheBuilder(builder);// 기본적인 GuavaCache 사용할때
 
-		cacheManager.setCaches(refreshableCache());
+			cacheManager.setCaches(refreshableCache()/*, clusterCache()*/);
 
 		return cacheManager;
 	}
