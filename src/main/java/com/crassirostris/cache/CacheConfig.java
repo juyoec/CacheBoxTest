@@ -27,7 +27,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -36,22 +35,13 @@ import java.util.stream.Stream;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Coupang
+ * User: crassirostris
  * Date: 2015-09-09
  * Time: 오전 11:35
  */
 @Configuration
 @Import(RefreshableCacheScheduleResistrar.class)
 public class CacheConfig implements CachingConfigurer{
-	/*@Autowired
-	@Qualifier("simpleCacheManager")
-	private SimpleCacheManager simpleCacheManager;
-	@Autowired
-	@Qualifier("guavaCacheManager")
-	private GuavaCacheManager guavaCacheManager;
-	@Autowired
-	@Qualifier("ehcacheCacheManager")
-	private EhCacheCacheManager ehcacheManager;*/
 
 	@Bean
 	public EhCacheCacheManager ehcacheCacheManager() {
@@ -79,13 +69,18 @@ public class CacheConfig implements CachingConfigurer{
 	public GuavaCache refreshableCache() {
 		return new RefreshableCache("refreshableCache").setFixedInterval(AbstractCacheController.CACHE_REFRESH_DURATION);
 	}
-/*
-	@Bean
-	public GuavaCache clusterCache() throws UnknownHostException {
-		RefreshableCache clusterCache = new ClusterCache("clusterCache", "192.168.181.41:8080","192.168.181.41:8081").setFixedInterval(AbstractCacheController.CACHE_REFRESH_DURATION);
 
+	@Bean
+	public GuavaCache clusterCacheObject() {
+		RefreshableCache clusterCache = new ClusterCache("clusterCacheObject", "127.0.0.1:8080","127.0.0.1:8081").setFixedInterval(AbstractCacheController.CACHE_REFRESH_DURATION);
 		return clusterCache;
-	}*/
+	}
+
+	@Bean
+	public GuavaCache clusterCache() {
+		RefreshableCache clusterCache = new ClusterCache("clusterCache", "127.0.0.1:8080","127.0.0.1:8081").setFixedInterval(AbstractCacheController.CACHE_REFRESH_DURATION);
+		return clusterCache;
+	}
 
 	@Bean
 	public GuavaCacheManager guavaCacheManager() {
@@ -94,7 +89,8 @@ public class CacheConfig implements CachingConfigurer{
 		CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder().expireAfterWrite(AbstractCacheController.CACHE_REFRESH_DURATION, TimeUnit.MILLISECONDS).maximumSize(100);
 		cacheManager.setCacheBuilder(builder);// 기본적인 GuavaCache 사용할때
 
-			cacheManager.setCaches(refreshableCache()/*, clusterCache()*/);
+		GuavaCache[] guavaCaches = Stream.of(refreshableCache(), clusterCache(), clusterCacheObject()).filter(Objects::nonNull).toArray(GuavaCache[]::new);
+		cacheManager.setCaches( guavaCaches);
 
 		return cacheManager;
 	}

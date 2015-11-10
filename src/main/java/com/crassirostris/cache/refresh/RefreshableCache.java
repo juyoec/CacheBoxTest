@@ -1,10 +1,7 @@
 package com.crassirostris.cache.refresh;
 
-import com.crassirostris.cache.controller.AbstractCacheController;
 import com.google.common.base.Preconditions;
-import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.Sets;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -13,16 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.guava.GuavaCache;
 import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.context.ApplicationContext;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.annotation.SchedulingConfigurer;
-import org.springframework.scheduling.config.ScheduledTaskRegistrar;
-import org.springframework.scheduling.support.ScheduledMethodRunnable;
-import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -42,8 +32,6 @@ public class RefreshableCache extends GuavaCache {
 	private ApplicationContext ac;
 
 	private final ConcurrentMap<Object, Object> tempStore = new ConcurrentHashMap<>(128);
-
-	private ExecutorService executorService = Executors.newFixedThreadPool(3);
 
 	private Date lastScheduleWorkedTime = Calendar.getInstance().getTime();
 
@@ -106,6 +94,7 @@ public class RefreshableCache extends GuavaCache {
 			objects = Sets.newHashSet(refreshTarget);
 		}*/
 		objects = getNativeCache().asMap().keySet();
+		ExecutorService executorService = Executors.newFixedThreadPool(3);
 		for (final Object key : objects) {
 			log.info(String.format("%s refresh Cache in %s", key, this.getName()));
 			Object ifPresent = getNativeCache().getIfPresent(key);
