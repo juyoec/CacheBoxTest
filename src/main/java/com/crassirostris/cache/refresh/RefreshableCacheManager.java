@@ -11,8 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Coupang
+ * User: crassirostris
  * Date: 2015-10-14
  * Time: 오후 6:27
  */

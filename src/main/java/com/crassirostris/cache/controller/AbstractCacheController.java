@@ -8,8 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Coupang
+ * User: crassirostris
  * Date: 2015-09-08
  * Time: 오후 6:08
  */

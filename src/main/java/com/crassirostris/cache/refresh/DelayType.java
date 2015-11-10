@@ -1,8 +1,7 @@
 package com.crassirostris.cache.refresh;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Coupang
+ * User: crassirostris
  * Date: 2015-10-14
  * Time: 오후 7:59
  */

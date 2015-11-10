@@ -5,8 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Coupang
+ * User: crassirostris
  * Date: 2015-09-09
  * Time: 오후 2:21
  */

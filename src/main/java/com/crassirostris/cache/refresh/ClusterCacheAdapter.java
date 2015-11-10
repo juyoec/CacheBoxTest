@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Coupang
+ * User: crassirostris
  * Date: 2015-11-06
  * Time: 오후 4:04
  */

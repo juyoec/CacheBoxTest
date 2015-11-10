@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created with IntelliJ IDEA.
  * User: crassirostris
  * Date: 2015-10-14
  * Time: 오후 8:27

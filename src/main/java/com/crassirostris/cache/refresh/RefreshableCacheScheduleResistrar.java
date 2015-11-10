@@ -16,7 +16,6 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
  * User: crassirostris
  * Date: 2015-10-14
  * Time: 오후 7:54

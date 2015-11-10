@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * Created with IntelliJ IDEA.
  * User: crassirostris
  * Date: 2015-09-09
  * Time: 오전 11:35
