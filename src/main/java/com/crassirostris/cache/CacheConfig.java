@@ -48,7 +48,7 @@ public class CacheConfig implements CachingConfigurer{
 		cacheConfiguration.setName("ehcache");
 		cacheConfiguration.setMemoryStoreEvictionPolicy("LRU");
 		cacheConfiguration.setMaxEntriesLocalHeap(100L);
-		cacheConfiguration.setTimeToLiveSeconds(5*60*1000);
+		cacheConfiguration.setTimeToLiveSeconds(AbstractCacheController.CACHE_REFRESH_DURATION);
 
 		net.sf.ehcache.config.Configuration config = new net.sf.ehcache.config.Configuration();
 		config.addCache(cacheConfiguration);

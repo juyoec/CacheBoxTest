@@ -35,6 +35,8 @@ public class RefreshableCache extends GuavaCache {
 
 	private Date lastScheduleWorkedTime = Calendar.getInstance().getTime();
 
+	private ExecutorService executorService = Executors.newFixedThreadPool(3);
+
 	// default FIXED_DELAY
 	@Getter
 	@Setter
@@ -83,18 +85,11 @@ public class RefreshableCache extends GuavaCache {
 		this.lastScheduleWorkedTime = Calendar.getInstance().getTime();
 	}
 
-	//@Scheduled(fixedRate = AbstractCacheController.CACHE_REFRESH_DURATION)
 	public void processRefresh() {
 		setWorkTime();
 		log.info(String.format("%s refresh start... All Key counted %d.", this.getName(), getNativeCache().asMap().keySet().size()));
 		Set<Object> objects = null;
-		/*if (refreshTarget == null || refreshTarget.length == 0) {
-			objects = getNativeCache().asMap().keySet();
-		} else {
-			objects = Sets.newHashSet(refreshTarget);
-		}*/
 		objects = getNativeCache().asMap().keySet();
-		ExecutorService executorService = Executors.newFixedThreadPool(3);
 		for (final Object key : objects) {
 			log.info(String.format("%s refresh Cache in %s", key, this.getName()));
 			Object ifPresent = getNativeCache().getIfPresent(key);
