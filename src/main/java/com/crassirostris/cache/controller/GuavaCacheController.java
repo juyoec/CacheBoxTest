@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PreDestroy;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -54,5 +55,10 @@ public class GuavaCacheController extends AbstractCacheController {
 
 	private void refreshLog() {
 		log.info("guava Cache refresh");
+	}
+
+	@PreDestroy
+	public void destroy() {
+		executorService.shutdown();
 	}
 }
