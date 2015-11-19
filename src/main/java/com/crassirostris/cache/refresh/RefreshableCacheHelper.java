@@ -2,16 +2,15 @@ package com.crassirostris.cache.refresh;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.MethodAnnotationsScanner;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -47,18 +46,8 @@ public class RefreshableCacheHelper {
 
 		try {
 			Object instance = getInstanceWithFields(targetMethod.getDeclaringClass(), ctx);
-			Class<?>[] parameterTypes = targetMethod.getParameterTypes();
-			if (parameterTypes.length == 0) {
-				result = targetMethod.invoke(instance);
-			} else {
-				if (key instanceof List) {
-					List tmpList = (List) key;
-					Object[] array = tmpList.toArray();
-					result = targetMethod.invoke(instance, array);
-				} else {
-					result = targetMethod.invoke(instance, key);
-				}
-			}
+			Object[] keys = (Object[]) FieldUtils.readDeclaredField(key, "params", true);
+			result = targetMethod.invoke(instance, keys);
 		} catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException | InstantiationException e) {
 			log.error(e.getMessage(), e);
 		}
@@ -70,28 +59,12 @@ public class RefreshableCacheHelper {
 			return null;
 		}
 		Object instance = targetMethod.newInstance();
-		Field[] declaredFields = instance.getClass().getDeclaredFields();
-		for (Field field : declaredFields) {
-			Object bean = null;
-			if (field.getType().isPrimitive()) {
-				continue;
-			}
-			try {
-				bean = ctx.getBean(field.getType());
-			} catch (NoSuchBeanDefinitionException e) {
-				bean = getInstanceWithFields(field.getType(), ctx);
-			}
-
-			if (bean == null ) {
-				continue;
-			}
-			field.setAccessible(true);
-			field.set(instance, bean);
-		}
+		Object targetBean = ctx.getBean(targetMethod);
+		BeanUtils.copyProperties(targetBean, instance);
 		return instance;
 	}
 
-	private static Method findTargetMethod(String name) {
+	protected static Method findTargetMethod(String name) {
 		setMethodsAnnotatedWith();
 		for (Method method : methodsAnnotatedWith) {
 			Cacheable annotation = method.getAnnotation(Cacheable.class);
